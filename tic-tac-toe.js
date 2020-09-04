@@ -1,15 +1,21 @@
 const squareValues = ["", "", "", "", "", "", "", "", ""];
-const gameStatus = "";
+let gameStatus = "";
+let currentPlayerSymbol = "x";
 
 const checkGameStatus = () => {
 	if (rowCheck()) {
-		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+    gameStatus = currentPlayerSymbol.toUpperCase();
+    console.log("rowcheck is bad")
+
 	} else if (columnCheck()) {
-		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+    gameStatus = currentPlayerSymbol.toUpperCase();
+    console.log("column is bad")
 	} else if (diagonalCheck()) {
-		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+    gameStatus = currentPlayerSymbol.toUpperCase();
+    console.log("diagonal is bad")
 	} else if (squareValues.every((square) => square !== "")) {
-		gameStatus = "None";
+    gameStatus = "None";
+    console.log("tie is bad")
 	}
 	if (gameStatus !== "") {
 		document.getElementById("game-status").innerHTML = `Winner: ${gameStatus}`;
@@ -48,12 +54,12 @@ function diagonalCheck() {
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
-	let currentPlayerSymbol = "x";
+	// let currentPlayerSymbol = "x";
 	const grid = document.getElementById("tic-tac-toe-board");
 	const squares = grid.querySelectorAll("div");
 	squares.forEach((square) => {
 		square.addEventListener("click", (event) => {
-			if (gameStatus !== "") return;
+			// if (gameStatus !== "") return;
 			if (currentPlayerSymbol !== "o" && square.innerHTML === "") {
 				//use X picture
 				square.innerHTML = `<img src="https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg">`;
@@ -69,7 +75,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 				squareValues[squareNum] = currentPlayerSymbol;
 				currentPlayerSymbol = "x";
 			}
-			checkGameStatus();
+			// checkGameStatus();
 		});
 	});
 });
