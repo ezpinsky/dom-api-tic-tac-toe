@@ -1,36 +1,75 @@
+const squareValues = ["", "", "", "", "", "", "", "", ""];
+const gameStatus = "";
+
+const checkGameStatus = () => {
+	if (rowCheck()) {
+		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+	} else if (columnCheck()) {
+		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+	} else if (diagonalCheck()) {
+		gameStatus = currentPlayerSymbol.toLocaleUpperCase();
+	} else if (squareValues.every((square) => square !== "")) {
+		gameStatus = "None";
+	}
+	if (gameStatus !== "") {
+		document.getElementById("game-status").innerHTML = `Winner: ${gameStatus}`;
+	}
+};
+
+function rowCheck() {
+	for (let i = 0; i < 8; i + 3) {
+		if (
+			squareValues[i][0] === squareValues[i][1] &&
+			squareValues[i][1] === squareValues[i][2]
+		) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function columnCheck() {
+	for (let i = 0; i < 3; i++) {
+		if (squareValues[i] === squareValues[i + 3] && squareValues[i] === squareValues[i + 6]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function diagonalCheck() {
+	if (squareValues[0] === squareValues[4] && squareValues[0] === squareValues[8]) {
+		return true;
+	} else if (squareValues[2] === squareValues[4] && squareValues[2] === squareValues[6]) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 window.addEventListener("DOMContentLoaded", (event) => {
-  const currentGrid = ["", "", "", "", "", "", "", "",""];
-
-  const playerClicks = () => {
-		let clickCount = 0;
-		const grid = document.getElementById("tic-tac-toe-board");
-		const squares = grid.querySelectorAll("div");
-		squares.forEach((square) => {
-			square.addEventListener("click", (event) => {
-				if (clickCount % 2 === 0 && square.innerHTML === "") {
-					console.log(square.innerHTML);
-					//use X picture
-					square.innerHTML = `<img src="https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg" id="x-${clickCount}">`;
-          square.classList.add("x");
-          let squareNum = (square.id[7])
-          currentGrid[squareNum] = "x"
-
-          clickCount++;
-				} else if (clickCount % 2 !== 0 && square.innerHTML === "") {
-					console.log(square.innerHTML);
-					//use O picture
-					square.innerHTML = `<img src="https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg" id="x-${clickCount}">`;
-          square.classList.add("o");
-          let squareNum = (square.id[7])
-          currentGrid[squareNum] = "o"
-
-          clickCount++;
-				}
-			});
-    });
-
-  };
-
-
-	playerClicks();
+	let currentPlayerSymbol = "x";
+	const grid = document.getElementById("tic-tac-toe-board");
+	const squares = grid.querySelectorAll("div");
+	squares.forEach((square) => {
+		square.addEventListener("click", (event) => {
+			if (gameStatus !== "") return;
+			if (currentPlayerSymbol !== "o" && square.innerHTML === "") {
+				//use X picture
+				square.innerHTML = `<img src="https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg">`;
+				square.classList.add(currentPlayerSymbol);
+				let squareNum = square.id[7];
+				squareValues[squareNum] = currentPlayerSymbol;
+				currentPlayerSymbol = "o";
+			} else if (square.innerHTML === "") {
+				//use O picture
+				square.innerHTML = `<img src="https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg">`;
+				square.classList.add(currentPlayerSymbol);
+				let squareNum = square.id[7];
+				squareValues[squareNum] = currentPlayerSymbol;
+				currentPlayerSymbol = "x";
+			}
+			checkGameStatus();
+		});
+	});
 });
